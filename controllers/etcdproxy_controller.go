@@ -50,8 +50,9 @@ type EtcdProxyReconciler struct {
 
 // +kubebuilder:rbac:groups=etcd.camelcasenotation.io,resources=etcdproxies,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=etcd.camelcasenotation.io,resources=etcdproxies/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=core,resources=deployments,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=core,resources=secrets,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=core,resources=services,verbs=get;list;watch;create;update;patch;delete
 
 // Reconcile handles EtcdProxy objects
 func (r *EtcdProxyReconciler) Reconcile(req ctrl.Request) (_ ctrl.Result, reterr error) {

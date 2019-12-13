@@ -42,6 +42,10 @@ deploy: manifests
 	cd config/manager && kustomize edit set image controller=${IMG}
 	kustomize build config/default | kubectl apply -f -
 
+undeploy: manifests
+	cd config/manager && kustomize edit set image controller=${IMG}
+	kustomize build config/default | kubectl delete -f -
+
 # Yaml generates YAML which can be deployed to a cluster
 yaml: manifests
 	cd config/manager && kustomize edit set image controller=${IMG}
