@@ -1,0 +1,22 @@
+apiVersion: etcd.camelcasenotation.io/v1alpha1
+kind: EtcdProxy
+metadata:
+  name: paul
+spec:
+  # The default is 1
+  replicas: 3
+  etcdServers:
+  - "https://infra-host-1:2379"
+  - "https://infra-host-2:2379"
+  - "https://infra-host-3:2379"
+  etcdCertSecretRef:
+    name: etcd-v2
+    namespace: etcdproxy
+  # Client certificate for accessing etcdproxy. Stored in Secrets specified by namespace/name below.
+  clientCertSecret: 
+    name: blart
+    namespace: default
+  # TODO: Revisit the below field names/concepts
+  signingCertDuration: 730h # defines for how long the signing certificate is valid.
+  servingCertDuration: 730h # defines for how long the serving certificate/key pair is valid.
+  clientCertDuration:  730h # defines for how long the client certificate/key pair is valid.

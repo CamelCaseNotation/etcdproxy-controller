@@ -1,0 +1,7 @@
+domain: camelcasenotation.io
+repo: github.com/camelcasenotation/etcdproxy-controller
+resources:
+- group: etcd
+  kind: EtcdProxy
+  version: v1alpha1
+version: "2"
