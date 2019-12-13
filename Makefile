@@ -1,8 +1,10 @@
 
 # Image URL to use all building/pushing image targets
-IMG ?= camelcasenotation/etcdproxy-controller:latest
+IMG ?= camelcasenotation/etcdproxy-controller
 # Produce CRDs that work back to Kubernetes 1.11 (no version conversion)
 CRD_OPTIONS ?= "crd:trivialVersions=true"
+
+GIT_REF = $(shell git rev-parse --short=8 --verify HEAD)
 
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 ifeq (,$(shell go env GOBIN))
@@ -39,16 +41,16 @@ uninstall: manifests
 
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
 deploy: manifests
-	cd config/manager && kustomize edit set image controller=${IMG}
+	cd config/manager && kustomize edit set image controller=${IMG}:${GIT_REF}
 	kustomize build config/default | kubectl apply -f -
 
 undeploy: manifests
-	cd config/manager && kustomize edit set image controller=${IMG}
+	cd config/manager && kustomize edit set image controller=${IMG}:${GIT_REF}
 	kustomize build config/default | kubectl delete -f -
 
 # Yaml generates YAML which can be deployed to a cluster
 yaml: manifests
-	cd config/manager && kustomize edit set image controller=${IMG}
+	cd config/manager && kustomize edit set image controller=${IMG}:${GIT_REF}
 	kustomize build config/default
 
 # Generate manifests e.g. CRD, RBAC etc.
@@ -69,11 +71,13 @@ generate: controller-gen
 
 # Build the docker image
 docker-build: test
-	docker build . -t ${IMG}
+	docker build . -t ${IMG}:${GIT_REF}
+	docker build . -t ${IMG}:latest
 
 # Push the docker image
 docker-push:
-	docker push ${IMG}
+	docker push ${IMG}:${GIT_REF}
+	docker push ${IMG}:latest
 
 # find or download controller-gen
 # download controller-gen if necessary

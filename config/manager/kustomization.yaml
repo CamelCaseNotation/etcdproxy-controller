@@ -5,4 +5,4 @@ kind: Kustomization
 images:
 - name: controller
   newName: camelcasenotation/etcdproxy-controller
-  newTag: latest
+  newTag: 9978f5a5
